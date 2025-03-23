@@ -103,11 +103,6 @@ typedef enum e_unit_type
 	UNIT_CARRIER = 2,
 	UNIT_BUILDER = 3
 } t_unit_type;
-typedef enum e_attack_type
-{
-	ATTACK_DIRECT_HIT = 0,
-	ATTACK_DIRECTION_SHOT = 1
-} t_attack_type;
 
 typedef struct s_unit_config
 {
@@ -127,8 +122,6 @@ typedef struct s_unit_config
 	unsigned long dmg_resource;
 	/// @brief How much damage the unit deals to walls.
 	unsigned long dmg_wall;
-	/// @brief The units attack type.
-	t_attack_type attack_type;
 	/// @brief The maximum reach the unit can attack. Unused for direct hit attack type units.
 	unsigned long attack_reach;
 	/// @brief The time a unit waits between moves.
@@ -186,6 +179,11 @@ typedef struct s_action_build
 	unsigned long id;
 	t_pos pos;
 } t_action_build;
+typedef struct s_action_attack
+{
+	unsigned long unit_id;
+	t_pos attack_target;
+} t_action_attack;
 typedef struct s_actions
 {
 	t_action_create *creates;
@@ -196,6 +194,8 @@ typedef struct s_actions
 	unsigned int transfer_moneys_count;
 	t_action_build *builds;
 	unsigned int builds_count;
+	t_action_attack *attacks;
+	unsigned int attacks_count;
 } t_actions;
 
 typedef struct s_game
@@ -334,6 +334,13 @@ void	ft_move(t_obj *unit, t_direction direction);
  * @param direction The target position.
  */
 void	ft_travel_to_pos(t_obj *unit, t_pos pos);
+/**
+ * @brief Attacks a specific object.
+ * 
+ * @param unit The unit that should attack.
+ * @param target The pos of the object that should be attacked.
+ */
+void	ft_attack(t_obj *unit, t_pos pos);
 /**
  * @brief Drops money at a specific position.
  * 

@@ -33,12 +33,17 @@ void	ft_reset_actions()
 		free(game.actions.builds);
 	game.actions.builds = NULL;
 	game.actions.builds_count = 0;
+
+	if (game.actions.attacks != NULL)
+		free(game.actions.attacks);
+	game.actions.attacks = NULL;
+	game.actions.attacks_count = 0;
 }
 
 char *ft_all_action_json(void)
 {
 	json_node *actions_array = create_node(JSON_TYPE_ARRAY);
-	int size = game.actions.travels_count + game.actions.creates_count + game.actions.transfer_moneys_count + game.actions.builds_count + 1;
+	int size = game.actions.travels_count + game.actions.creates_count + game.actions.transfer_moneys_count + game.actions.builds_count + game.actions.attacks_count + 1;
 	actions_array->array = malloc(sizeof(json_node*) * size);
 	actions_array->array[size - 1] = NULL;
 
@@ -146,6 +151,35 @@ char *ft_all_action_json(void)
 		y->key = strdup("y");
 		y->number = game.actions.builds[i - game.actions.travels_count - game.actions.creates_count - game.actions.transfer_moneys_count].pos.y;
 		action->array[3] = y;
+
+		actions_array->array[i] = action;
+	}
+	max += game.actions.attacks_count;
+	for (; i < max; i++)
+	{
+		json_node *action = create_node(JSON_TYPE_OBJECT);
+		action->array = malloc(sizeof(json_node*) * 5);
+		action->array[4] = NULL;
+
+		json_node *type = create_node(JSON_TYPE_STRING);
+		type->key = strdup("type");
+		type->string = strdup("attack");
+		action->array[0] = type;
+
+		json_node *unit_id = create_node(JSON_TYPE_NUMBER);
+		unit_id->key = strdup("unit_id");
+		unit_id->number = game.actions.attacks[i - game.actions.travels_count - game.actions.creates_count - game.actions.transfer_moneys_count - game.actions.builds_count].unit_id;
+		action->array[1] = unit_id;
+
+		json_node *targetX = create_node(JSON_TYPE_NUMBER);
+		targetX->key = strdup("x");
+		targetX->number = game.actions.attacks[i - game.actions.travels_count - game.actions.creates_count - game.actions.transfer_moneys_count - game.actions.builds_count].attack_target.x;
+		action->array[2] = targetX;
+
+		json_node *targetY = create_node(JSON_TYPE_NUMBER);
+		targetY->key = strdup("y");
+		targetY->number = game.actions.attacks[i - game.actions.travels_count - game.actions.creates_count - game.actions.transfer_moneys_count - game.actions.builds_count].attack_target.y;
+		action->array[3] = targetY;
 
 		actions_array->array[i] = action;
 	}

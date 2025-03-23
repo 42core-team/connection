@@ -87,6 +87,24 @@ void	ft_travel_to_pos(t_obj *unit, t_pos pos)
 	}
 }
 
+void	ft_attack(t_obj *unit, t_pos pos)
+{
+	t_action_attack	**actions = &game.actions.attacks;
+	unsigned int	*count = &game.actions.attacks_count;
+
+	if (!*actions)
+	{
+		*actions = malloc(sizeof(t_action_attack) * 2);
+		*count = 0;
+	}
+	else
+		*actions = realloc(*actions, sizeof(t_action_attack) * (*count + 2));
+
+	(*actions)[*count].unit_id = unit->id;
+	(*actions)[*count].attack_target = pos;
+	(*count)++;
+}
+
 void	ft_drop_money(t_obj *source, t_pos target_pos, unsigned long amount)
 {
 	if (!source || source->s_unit.balance < amount)
