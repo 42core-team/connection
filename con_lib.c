@@ -73,9 +73,10 @@ void	ft_enable_debug()
  *
  * @param ft_init_func Your own function that is called once at the start of the game.
  * @param ft_user_loop Your own function that is called every time new data is received.
+ * @param ft_on_exit Your own function that is being called once the game is over.
  * @param ptr A pointer that is passed to your functions.
  */
-void	ft_loop(void (*ft_init_func)(void *ptr), void (*ft_user_loop)(void *ptr), void (*ft_on_exit)(void *ptr), void *ptr)
+int	ft_loop(void (*ft_init_func)(void *ptr), void (*ft_user_loop)(void *ptr), void (*ft_on_exit)(void *ptr), void *ptr)
 {
 	char	*msg;
 	char	*actions;
@@ -125,7 +126,13 @@ void	ft_loop(void (*ft_init_func)(void *ptr), void (*ft_user_loop)(void *ptr), v
 		ft_on_exit(ptr);
 
 	if (ft_get_my_core())
+	{
 		printf("Game over! You won!\n");
+		return (1);
+	}
 	else
+	{
 		printf("Game over! You lost!\n");
+		return (0);
+	}
 }
