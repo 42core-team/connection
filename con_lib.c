@@ -132,7 +132,7 @@ int	ft_loop(void (*ft_init_func)(void *ptr), void (*ft_user_loop)(void *ptr), vo
 	}
 	else
 	{
-		printf("You won!\n");
+		printf("Game over! You won!\n");
 		return (1);
 	}
 }
