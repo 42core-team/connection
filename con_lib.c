@@ -125,7 +125,7 @@ int	ft_loop(void (*ft_init_func)(void *ptr), void (*ft_user_loop)(void *ptr), vo
 	if (ft_on_exit)
 		ft_on_exit(ptr);
 
-	if (ft_get_my_core() == NULL)
+	if (ft_get_my_core()->state == STATE_DEAD)
 	{
 		printf("Game over! You lost!\n");
 		return (0);
