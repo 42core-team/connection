@@ -125,14 +125,14 @@ int	ft_loop(void (*ft_init_func)(void *ptr), void (*ft_user_loop)(void *ptr), vo
 	if (ft_on_exit)
 		ft_on_exit(ptr);
 
-	if (ft_get_my_core())
-	{
-		printf("Game over! You won!\n");
-		return (1);
-	}
-	else
+	if (ft_get_my_core() == NULL)
 	{
 		printf("Game over! You lost!\n");
 		return (0);
+	}
+	else
+	{
+		printf("You won!\n");
+		return (1);
 	}
 }
