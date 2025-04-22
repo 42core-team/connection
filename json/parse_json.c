@@ -41,6 +41,15 @@ void	ft_parse_json_config(char *json)
 	game.config.resources = ft_parse_resource_config(token_ind, json_data.token_len, json_data.tokens, json);
 	game.config.resource_spawn_timeout = ft_find_parse_ulong("resource_spawn_timeout", &token_ind, json_data.token_len, json_data.tokens, json);
 
+	game.config.flag_config.flag_speed = ft_find_parse_ulong("flag_speed", &token_ind, json_data.token_len, json_data.tokens, json);
+	game.config.flag_config.max_throw_distance = ft_find_parse_ulong("max_throw_distance", &token_ind, json_data.token_len, json_data.tokens, json);
+	game.config.flag_config.flag_slowdown_percentage = ft_find_parse_ulong("flag_slowdown_percentage", &token_ind, json_data.token_len, json_data.tokens, json);
+	game.config.flag_config.catch_range = ft_find_parse_ulong("catch_range", &token_ind, json_data.token_len, json_data.tokens, json);
+	game.config.flag_config.jump_prepare_ticks = ft_find_parse_ulong("jump_prepare_ticks", &token_ind, json_data.token_len, json_data.tokens, json);
+	game.config.flag_config.jump_duration_ticks = ft_find_parse_ulong("jump_duration_ticks", &token_ind, json_data.token_len, json_data.tokens, json);
+	game.config.flag_config.jump_catch_range = ft_find_parse_ulong("jump_catch_range", &token_ind, json_data.token_len, json_data.tokens, json);
+	game.config.flag_config.flag_capture_range = ft_find_parse_ulong("flag_capture_range", &token_ind, json_data.token_len, json_data.tokens, json);
+
 	free(json_data.tokens);
 }
 

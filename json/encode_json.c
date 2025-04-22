@@ -71,6 +71,47 @@ char	*ft_attack_json()
 	return (json);
 }
 
+char *ft_catch_json()
+{
+	char *json = calloc(1,1);
+	for (unsigned i=0; i < game.actions.catches_count; i++) {
+		t_action_catch u = game.actions.catches[i];
+		json = ft_strjoin_free_1(json, "{\"Catch\":{\"unit_id\":");
+		json = ft_strjoin_free_1_2(json, ft_ul_string(u.unit_id));
+		json = ft_strjoin_free_1(json, "}},");
+	}
+	return json;
+}
+
+char *ft_throw_json()
+{
+	char *json = calloc(1,1);
+	for (unsigned i=0; i < game.actions.throws_count; i++) {
+		t_action_throw t = game.actions.throws[i];
+		json = ft_strjoin_free_1(json, "{\"Throw\":{\"unit_id\":");
+		json = ft_strjoin_free_1_2(json, ft_ul_string(t.unit_id));
+		json = ft_strjoin_free_1(json, ",\"target_pos\":{");
+		json = ft_strjoin_free_1(json, "\"x\":");
+		json = ft_strjoin_free_1_2(json, ft_ul_string(t.x));
+		json = ft_strjoin_free_1(json, ",\"y\":");
+		json = ft_strjoin_free_1_2(json, ft_ul_string(t.y));
+		json = ft_strjoin_free_1(json, "}}},");
+	}
+	return json;
+}
+
+char *ft_jump_json()
+{
+	char *json = calloc(1,1);
+	for (unsigned i=0; i < game.actions.jumps_count; i++) {
+		t_action_jump u = game.actions.jumps[i];
+		json = ft_strjoin_free_1(json, "{\"Jump\":{\"unit_id\":");
+		json = ft_strjoin_free_1_2(json, ft_ul_string(u.unit_id));
+		json = ft_strjoin_free_1(json, "}},");
+	}
+	return json;
+}
+
 void	ft_reset_actions()
 {
 	if (game.actions.creates != NULL)
@@ -87,6 +128,21 @@ void	ft_reset_actions()
 		free(game.actions.attacks);
 	game.actions.attacks = NULL;
 	game.actions.attacks_count = 0;
+
+	if (game.actions.catches != NULL)
+		free(game.actions.catches);
+	game.actions.catches = NULL;
+	game.actions.catches_count = 0;
+
+	if (game.actions.throws != NULL)
+		free(game.actions.throws);
+	game.actions.throws = NULL;
+	game.actions.throws_count = 0;
+
+	if (game.actions.jumps != NULL)
+		free(game.actions.jumps);
+	game.actions.jumps = NULL;
+	game.actions.jumps_count = 0;
 }
 
 char	*ft_all_action_json()
@@ -98,6 +154,9 @@ char	*ft_all_action_json()
 	json = ft_strjoin_free_1_2(json, ft_create_json());
 	json = ft_strjoin_free_1_2(json, ft_travel_json());
 	json = ft_strjoin_free_1_2(json, ft_attack_json());
+	json = ft_strjoin_free_1_2(json, ft_catch_json());
+	json = ft_strjoin_free_1_2(json, ft_throw_json());
+	json = ft_strjoin_free_1_2(json, ft_jump_json());
 
 	if (json[strlen(json) - 1] == ',')
 		json[strlen(json) - 1] = '\0';

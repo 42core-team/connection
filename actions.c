@@ -158,3 +158,32 @@ void	ft_travel_attack(t_obj *attacker_unit, t_obj *attack_obj)
 	ft_travel_to_obj(attacker_unit, attack_obj);
 	ft_attack(attacker_unit, attack_obj);
 }
+
+void ft_catch(unsigned long unit_id)
+{
+	unsigned cnt = game.actions.catches_count++;
+	game.actions.catches = realloc(game.actions.catches, sizeof(*game.actions.catches)*(cnt+1));
+	game.actions.catches[cnt].unit_id = unit_id;
+}
+
+void ft_throw_pos(unsigned long unit_id, unsigned long x, unsigned long y)
+{
+	unsigned cnt = game.actions.throws_count++;
+	game.actions.throws = realloc(game.actions.throws, sizeof(*game.actions.throws)*(cnt+1));
+	game.actions.throws[cnt].unit_id = unit_id;
+	game.actions.throws[cnt].x = x;
+	game.actions.throws[cnt].y = y;
+}
+
+void ft_throw_obj(unsigned long unit_id, t_obj *target)
+{
+	if (!target) return;
+	ft_throw_pos(unit_id, target->x, target->y);
+}
+
+void ft_jump(unsigned long unit_id)
+{
+	unsigned cnt = game.actions.jumps_count++;
+	game.actions.jumps = realloc(game.actions.jumps, sizeof(*game.actions.jumps)*(cnt+1));
+	game.actions.jumps[cnt].unit_id = unit_id;
+}

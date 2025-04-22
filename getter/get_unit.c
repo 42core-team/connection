@@ -139,7 +139,13 @@ t_obj	*ft_get_nearest_team_unit(t_obj *unit)
 	return (nearest);
 }
 
-t_obj **ft_get_all_units()
+unsigned long ft_get_unit_carrying_flag(void)
 {
-	return game.units;
+	return game.flag.carrier_id;
+}
+t_obj *ft_get_unit_carrying_flag_obj(void)
+{
+	unsigned long id = game.flag.carrier_id;
+	if (id == 0) return NULL;
+	return ft_get_obj_from_id(id);
 }

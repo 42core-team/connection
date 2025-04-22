@@ -259,3 +259,33 @@ void ft_parse_teams(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 		index++;
 	}
 }
+
+void ft_parse_flag_state(int token_ind, int token_len, jsmntok_t *tokens, char *json)
+{
+	int fi = ft_find_token_one("flag", token_ind, token_len, tokens, json);
+	if (fi != -1)
+	{
+		char *s = ft_find_parse_str("state",  &fi, token_len, tokens, json);
+		if      (strcmp(s, "Lying")   == 0) game.flag.state = FLAG_LYING;
+		else if (strcmp(s, "Carried") == 0) game.flag.state = FLAG_CARRIED;
+		else if (strcmp(s, "Flying")  == 0) game.flag.state = FLAG_FLYING;
+		free(s);
+
+		game.flag.x          = ft_find_parse_ulong("pos",      &fi, token_len, tokens, json);
+		game.flag.y          = ft_find_parse_ulong("pos",      &fi, token_len, tokens, json); // parse pos.x then pos.y
+		game.flag.carrier_id = ft_find_parse_ulong("carrier_id",&fi, token_len, tokens, json);
+
+		// target_pos only when flying
+		int ti = ft_find_token_one("target_pos", fi, token_len, tokens, json);
+		if (ti != -1)
+		{
+			game.flag.target_x = ft_find_parse_ulong("x", &ti, token_len, tokens, json);
+			game.flag.target_y = ft_find_parse_ulong("y", &ti, token_len, tokens, json);
+		}
+		else
+		{
+			game.flag.target_x = 0;
+			game.flag.target_y = 0;
+		}
+	}
+}

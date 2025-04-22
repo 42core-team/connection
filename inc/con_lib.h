@@ -82,6 +82,29 @@ typedef enum e_unit_type
 	UNIT_HEALER = 5
 } t_unit_type;
 
+typedef enum e_flag_state {
+    FLAG_LYING   = 0,
+    FLAG_CARRIED = 1,
+    FLAG_FLYING  = 2,
+} t_flag_state;
+
+typedef struct s_flag {
+    t_flag_state state;
+    unsigned long x, y;
+    unsigned long carrier_id;         // 0 = none
+    unsigned long target_x, target_y; // only when flying
+} t_flag;
+
+typedef struct s_flag_config {
+    unsigned long flag_speed;
+    unsigned long max_throw_distance;
+    unsigned long flag_slowdown_percentage;
+    unsigned long catch_range;
+    unsigned long jump_prepare_ticks;
+    unsigned long jump_duration_ticks;
+    unsigned long jump_catch_range;
+    unsigned long flag_capture_range;
+} t_flag_config;
 typedef struct s_unit_config
 {
 	/// @brief The name of the unit.
@@ -141,6 +164,8 @@ typedef struct s_config
 	t_unit_config *units;
 	/// @brief List of all resource types that are available in the game. The array is terminated by an element with type_id 0.
 	t_resource_config *resources;
+	/// @brief Flag config data
+	t_flag_config flag_config;
 } t_config;
 
 typedef struct s_action_create
@@ -159,6 +184,20 @@ typedef struct s_action_attack
 	unsigned long attacker_id;
 	unsigned long target_id;
 } t_action_attack;
+typedef struct s_action_catch
+{
+	unsigned long unit_id;
+} t_action_catch;
+typedef struct s_action_throw
+{
+	unsigned long unit_id;
+	unsigned long x;
+	unsigned long y;
+} t_action_throw;
+typedef struct s_action_jump
+{
+	unsigned long unit_id;
+} t_action_jump;
 typedef struct s_actions
 {
 	t_action_create *creates;
@@ -167,6 +206,12 @@ typedef struct s_actions
 	unsigned int travels_count;
 	t_action_attack *attacks;
 	unsigned int attacks_count;
+	t_action_catch *catches;
+	unsigned int catches_count;
+	t_action_throw *throws;
+	unsigned int throws_count;
+	t_action_jump *jumps;
+	unsigned int jumps_count;
 } t_actions;
 
 typedef struct s_game
@@ -203,6 +248,10 @@ typedef struct s_game
 	 * @brief List of all units and their informations. NULL-terminated.
 	 */
 	t_obj **units;
+	/**
+	 * @brief Data on the flag.
+	 */
+	t_flag flag;
 	/**
 	 * @brief List of all actions that will be send to the server when your function ends.
 	 */
@@ -277,6 +326,8 @@ t_obj	*ft_get_nearest_team_unit(t_obj *unit);
  * @brief Get the nearest resource to the given unit
  */
 t_obj	*ft_get_nearest_resource(t_obj *unit);
+unsigned long ft_get_unit_carrying_flag(void);
+t_obj *ft_get_unit_carrying_flag_obj(void);
 // --------------- unit config getter ---------------
 /**
  * @brief Get the unit config by type_id
@@ -359,6 +410,10 @@ void ft_attack(t_obj *attacker, t_obj *target);
  * @param attack_obj Pointer to the unit that should be attacked.
  */
 void ft_travel_attack(t_obj *attacker_unit, t_obj *attack_obj);
+void ft_catch(unsigned long unit_id);
+void ft_throw_pos(unsigned long unit_id, unsigned long x, unsigned long y);
+void ft_throw_obj(unsigned long unit_id, t_obj *target);
+void ft_jump(unsigned long unit_id);
 
 // -------------- print_utils.c --------------
 /**
