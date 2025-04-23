@@ -33,6 +33,22 @@ void	ft_print_teams()
 	}
 }
 
+void	ft_print_flag()
+{
+	t_flag flag = game.flag;
+
+	char *flag_state = "Unknown";
+	if (flag.state == FLAG_FLYING)
+		flag_state = "Flying";
+	else if (flag.state == FLAG_CARRIED)
+		flag_state = "Carried";
+	else if (flag.state == FLAG_LYING)
+		flag_state = "Lying";
+
+	printf("Flag:\n");
+	printf("- x: %lu y: %lu state: %s carrier_id: %lu target_x: %lu target_y: %lu\n", flag.x, flag.y, flag_state, flag.carrier_id, flag.target_x, flag.target_y);
+}
+
 void	ft_print_cores()
 {
 	t_obj	**cores = game.cores;
@@ -88,7 +104,7 @@ void	ft_print_units()
 			state = "DEAD";
 		else if (units[index]->state == STATE_UNINITIALIZED)
 			state = "UNINITIALIZED";
-		printf("- id: %lu type_id: %lu team_id: %lu x: %lu y: %lu hp: %lu state: %s\n", units[index]->id, units[index]->s_unit.type_id, units[index]->s_unit.team_id, units[index]->x, units[index]->y, units[index]->hp, state);
+		printf("- id: %lu type_id: %lu team_id: %lu x: %lu y: %lu hp: %lu state: %s jump_prepare %lu jump_active %lu\n", units[index]->id, units[index]->s_unit.type_id, units[index]->s_unit.team_id, units[index]->x, units[index]->y, units[index]->hp, state, units[index]->s_unit.jump_prepare, units[index]->s_unit.jump_active);
 		index++;
 	}
 }
@@ -166,6 +182,7 @@ void	ft_print_all()
 	ft_print_game_config(&game.config);
 	ft_print_status(game.status);
 	ft_print_teams(game.teams);
+	ft_print_flag();
 	ft_print_cores(game.cores);
 	ft_print_resources(game.resources);
 	ft_print_units(game.units);

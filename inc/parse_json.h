@@ -17,6 +17,7 @@ void				ft_parse_cores(int token_ind, int token_len, jsmntok_t *tokens, char *js
 void				ft_parse_teams(int token_ind, int token_len, jsmntok_t *tokens, char *json);
 void				ft_parse_resources(int token_ind, int token_len, jsmntok_t *tokens, char *json);
 void				ft_parse_units(int token_ind, int token_len, jsmntok_t *tokens, char *json);
+void				ft_parse_flag_state(int token_ind, int token_len, jsmntok_t *tokens, char *json);
 t_team_config		*ft_parse_team_config(int token_ind, int token_len, jsmntok_t *tokens, char *json);
 t_unit_config		*ft_parse_unit_config(int token_ind, int token_len, jsmntok_t *tokens, char *json);
 t_resource_config	*ft_parse_resource_config(int token_ind, int token_len, jsmntok_t *tokens, char *json);

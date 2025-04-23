@@ -69,6 +69,8 @@ typedef struct s_obj
 			unsigned long type_id;
 			/// @brief The id of the team that owns the unit.
 			unsigned long team_id;
+			unsigned long jump_prepare;
+			unsigned long jump_active;
 		}	s_unit;
 	};
 } t_obj;
@@ -429,6 +431,7 @@ void ft_print_teams();
  * @brief Prints the current game cores with inforamtion about their id, team_id, x, y and hp into stdout
  *
  */
+void	ft_print_flag();
 void ft_print_cores();
 /**
  * @brief Prints the current game resources with inforamtion about their id, value, x, y and hp into stdout

@@ -23,6 +23,8 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 			{
 				existingObj->s_unit.type_id = obj.s_unit.type_id;
 				existingObj->s_unit.team_id = obj.s_unit.team_id;
+				existingObj->s_unit.jump_prepare = obj.s_unit.jump_prepare;
+				existingObj->s_unit.jump_active = obj.s_unit.jump_active;
 			}
 			if ((*arr) == game.cores)
 				existingObj->s_core.team_id = obj.s_core.team_id;
@@ -57,6 +59,8 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 			{
 				existingObj->s_unit.type_id = obj.s_unit.type_id;
 				existingObj->s_unit.team_id = obj.s_unit.team_id;
+				existingObj->s_unit.jump_prepare = obj.s_unit.jump_prepare;
+				existingObj->s_unit.jump_active = obj.s_unit.jump_active;
 			}
 			if ((*arr) == game.cores)
 				existingObj->s_core.team_id = obj.s_core.team_id;
@@ -92,6 +96,8 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 	{
 		existingObj->s_unit.type_id = obj.s_unit.type_id;
 		existingObj->s_unit.team_id = obj.s_unit.team_id;
+		existingObj->s_unit.jump_prepare = obj.s_unit.jump_prepare;
+		existingObj->s_unit.jump_active = obj.s_unit.jump_active;
 	}
 	if ((*arr) == game.cores)
 		existingObj->s_core.team_id = obj.s_core.team_id;
@@ -206,6 +212,8 @@ void	ft_parse_units(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 		readUnit.hp = ft_find_parse_ulong("hp", &token_ind, token_len, tokens, json);
 		readUnit.x = ft_find_parse_ulong("x", &token_ind, token_len, tokens, json);
 		readUnit.y = ft_find_parse_ulong("y", &token_ind, token_len, tokens, json);
+		readUnit.s_unit.jump_prepare = ft_find_parse_ulong("jump_prepare", &token_ind, token_len, tokens, json);
+		readUnit.s_unit.jump_active = ft_find_parse_ulong("jump_active", &token_ind, token_len, tokens, json);
 
 		apply_obj_to_arr(readUnit, &game.units);
 
@@ -263,29 +271,39 @@ void ft_parse_teams(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 void ft_parse_flag_state(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 {
 	int fi = ft_find_token_one("flag", token_ind, token_len, tokens, json);
-	if (fi != -1)
+	if (fi == -1)
+		return ;
+
+	char *s = ft_find_parse_str("state",  &fi, token_len, tokens, json);
+	if      (strcmp(s, "Lying")   == 0) game.flag.state = FLAG_LYING;
+	else if (strcmp(s, "Carried") == 0) game.flag.state = FLAG_CARRIED;
+	else if (strcmp(s, "Flying")  == 0) game.flag.state = FLAG_FLYING;
+	free(s);
+
+	int pi = ft_find_token_one("pos", fi, token_len, tokens, json);
+	if (pi != -1)
 	{
-		char *s = ft_find_parse_str("state",  &fi, token_len, tokens, json);
-		if      (strcmp(s, "Lying")   == 0) game.flag.state = FLAG_LYING;
-		else if (strcmp(s, "Carried") == 0) game.flag.state = FLAG_CARRIED;
-		else if (strcmp(s, "Flying")  == 0) game.flag.state = FLAG_FLYING;
-		free(s);
+		game.flag.x = ft_find_parse_ulong("x", &pi, token_len, tokens, json);
+		game.flag.y = ft_find_parse_ulong("y", &pi, token_len, tokens, json);
+	}
+	else
+	{
+		game.flag.x = 0;
+		game.flag.y = 0;
+	}
 
-		game.flag.x          = ft_find_parse_ulong("pos",      &fi, token_len, tokens, json);
-		game.flag.y          = ft_find_parse_ulong("pos",      &fi, token_len, tokens, json); // parse pos.x then pos.y
-		game.flag.carrier_id = ft_find_parse_ulong("carrier_id",&fi, token_len, tokens, json);
+	game.flag.carrier_id = ft_find_parse_ulong("carrier_id",&fi, token_len, tokens, json);
 
-		// target_pos only when flying
-		int ti = ft_find_token_one("target_pos", fi, token_len, tokens, json);
-		if (ti != -1)
-		{
-			game.flag.target_x = ft_find_parse_ulong("x", &ti, token_len, tokens, json);
-			game.flag.target_y = ft_find_parse_ulong("y", &ti, token_len, tokens, json);
-		}
-		else
-		{
-			game.flag.target_x = 0;
-			game.flag.target_y = 0;
-		}
+	// target_pos only when flying
+	int ti = ft_find_token_one("target_pos", fi, token_len, tokens, json);
+	if (ti != -1)
+	{
+		game.flag.target_x = ft_find_parse_ulong("x", &ti, token_len, tokens, json);
+		game.flag.target_y = ft_find_parse_ulong("y", &ti, token_len, tokens, json);
+	}
+	else
+	{
+		game.flag.target_x = 0;
+		game.flag.target_y = 0;
 	}
 }
