@@ -24,9 +24,9 @@ t_obj	*ft_get_first_opponent_core(void)
 	if (!game.cores)
 		return (NULL);
 
-	while (game.cores[ind] != NULL)
-	{
-		if (game.cores[ind]->s_core.team_id != game.my_team_id)
+	while (game.cores[ind] != NULL) {
+		if ((game.cores[ind]->s_core.team_id != game.my_team_id) &&
+		    (game.cores[ind]->state == STATE_ALIVE))
 			return (game.cores[ind]);
 		ind++;
 	}
