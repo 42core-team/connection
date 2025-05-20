@@ -3,11 +3,13 @@
 static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 {
 	bool objInserted = false;
+	size_t arrLen;
+	size_t index;
 
 	obj.state = STATE_ALIVE;
 
 	// 1. LOOP: Id Matching
-	size_t index = 0;
+	index = 0;
 	while ((*arr)[index] != NULL)
 	{
 		if ((*arr)[index]->id == obj.id)
@@ -74,12 +76,22 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 	}
 
 	// 3. Add to the back
-	size_t arrLen = 0;
+	arrLen = 0;
 	while ((*arr)[arrLen] != NULL)
 		arrLen++;
 	(*arr) = realloc((*arr), sizeof(t_obj *) * (arrLen + 2));
+	if (!*arr)
+	{
+		LOG_ERR("failed to reallocate array");
+		return;
+	}
 	(*arr)[arrLen + 1] = NULL;
 	(*arr)[arrLen] = malloc(sizeof(t_obj));
+	if (!(*arr)[arrLen])
+	{
+		LOG_ERR("failed to allocate new element");
+		return;
+	}
 	t_obj * existingObj = (*arr)[arrLen];
 	existingObj->type = obj.type;
 	existingObj->state = STATE_ALIVE;

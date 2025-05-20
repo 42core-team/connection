@@ -17,7 +17,6 @@ parse_json_utils.c \
 parse_json.c \
 formatter.c \
 print_utils.c \
-error.c \
 init_con_utils.c \
 socket.c \
 utils.c \

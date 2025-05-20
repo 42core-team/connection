@@ -9,6 +9,8 @@
 
 # include "con_lib.h"
 
+#define LOG_ERR(fmt, ...) fprintf(stderr, "%s:%d: Error:" fmt "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__)
+
 //utils.c
 void	ft_parse_json_config(char *json);
 void	ft_parse_json_state(char *json);

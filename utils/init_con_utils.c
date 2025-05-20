@@ -11,6 +11,11 @@ static char *ft_create_str(char *team_name, char *id)
 		len += strlen(id);
 
 	msg = malloc(sizeof(char) * (len + 26));
+	if (!msg)
+	{
+		LOG_ERR("Error allocating memory for message");
+		return NULL;
+	}
 	if (team_name != NULL && id != NULL)
 		sprintf(msg, "{\"id\": %s, \"name\": \"%s\"}\n", id, team_name);
 	else if (id != NULL)
@@ -19,7 +24,7 @@ static char *ft_create_str(char *team_name, char *id)
 		sprintf(msg, "{\"id\": 1, \"name\": \"%s\"}\n", team_name);
 	else
 		sprintf(msg, "{\"id\": 1}\n");
-	return (msg);
+	return msg;
 }
 
 char	*ft_create_login_msg(char *team_name, int *argc, char **argv)
