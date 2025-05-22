@@ -139,7 +139,36 @@ t_obj	*ft_get_nearest_team_unit(t_obj *unit)
 	return (nearest);
 }
 
-t_obj **ft_get_all_units()
+t_obj **ft_get_units()
 {
-	return game.units;
+	// loop through and count alive units, then put them all in a new array
+	int		ind = 0;
+	int		count = 0;
+	if (!game.units)
+		return (NULL);
+	while (game.units[ind] != NULL)
+	{
+		if (game.units[ind]->state == STATE_ALIVE)
+			count++;
+		ind++;
+	}
+
+	t_obj **alive_units = malloc(sizeof(t_obj *) * (count + 1));
+	if (!alive_units)
+		return (NULL);
+	alive_units[count] = NULL;
+
+	ind = 0;
+	count = 0;
+	while (game.units[ind] != NULL)
+	{
+		if (game.units[ind]->state == STATE_ALIVE)
+		{
+			alive_units[count] = game.units[ind];
+			count++;
+		}
+		ind++;
+	}
+
+	return (alive_units);
 }

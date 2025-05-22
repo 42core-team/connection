@@ -236,6 +236,10 @@ t_team	*ft_get_my_team(void);
 t_team	*ft_get_first_opponent_team(void);
 // --------------- core getter ---------------
 /**
+ * @brief Returns a pointer array of all alive cores
+ */
+t_obj	**ft_get_cores(void);
+/**
  * @brief Get my core
  */
 t_obj	*ft_get_my_core(void);
@@ -249,32 +253,36 @@ t_obj	*ft_get_first_opponent_core(void);
 t_obj	*ft_get_nearest_core(t_obj *obj);
 // --------------- unit getter ---------------
 /**
- * @brief Returns a pointer array of all units
+ * @brief Returns a pointer array of all alive units
  */
-t_obj **ft_get_all_units();
+t_obj **ft_get_units();
 /**
- * @brief Allocates a pointer array of all my units
+ * @brief Allocates a pointer array of all my alive units
  */
 t_obj	**ft_get_my_units(void);
 /**
- * @brief Allocates a pointer array of all opponent units
+ * @brief Allocates a pointer array of all alive opponent units
  */
 t_obj	**ft_get_opponent_units(void);
 /**
- * @brief Get the nearest unit to the given unit
+ * @brief Get the nearest alive unit to the given unit
  */
 t_obj	*ft_get_nearest_unit(t_obj *unit);
 /**
- * @brief Get the nearest opponent unit to the given unit
+ * @brief Get the nearest alive opponent unit to the given unit
  */
 t_obj	*ft_get_nearest_opponent_unit(t_obj *unit);
 /**
- * @brief Get the nearest team unit to the given unit
+ * @brief Get the nearest alive team unit to the given unit
  */
 t_obj	*ft_get_nearest_team_unit(t_obj *unit);
 // --------------- resource getter ---------------
 /**
- * @brief Get the nearest resource to the given unit
+ * @brief Returns a pointer array of all alive resources
+ */
+t_obj	**ft_get_resources(void);
+/**
+ * @brief Get the nearest alive resource to the given unit
  */
 t_obj	*ft_get_nearest_resource(t_obj *unit);
 // --------------- unit config getter ---------------
