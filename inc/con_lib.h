@@ -301,7 +301,7 @@ double	ft_distance(t_obj *obj1, t_obj *obj2);
  * @param x To which x coordinate the unit should travel.
  * @param y To which y coordinate the unit should travel.
  */
-void ft_travel_to_id(unsigned long id, unsigned long x, unsigned long y);
+int ft_travel_to_id(unsigned long id, unsigned long x, unsigned long y);
 /**
  * @brief Lets a unit travel to a specific coordinate. Same as ft_travel_to_id, besides that this function takes a pointer to a unit instead of an id.
  *
@@ -309,7 +309,7 @@ void ft_travel_to_id(unsigned long id, unsigned long x, unsigned long y);
  * @param x To which x coordinate the unit should travel.
  * @param y To which y coordinate the unit should travel.
  */
-void ft_travel_to(t_obj *unit, unsigned long x, unsigned long y);
+int ft_travel_to(t_obj *unit, unsigned long x, unsigned long y);
 /**
  * @brief Lets a unit start to travel into a specific direction. Same as ft_travel_dir, besides that this function takes an id instead of a pointer to a unit. When x and y are both 0, the unit will stop traveling.
  *
@@ -317,7 +317,7 @@ void ft_travel_to(t_obj *unit, unsigned long x, unsigned long y);
  * @param x x vector of the direction the unit should travel.
  * @param y y vector of the direction the unit should travel.
  */
-void ft_travel_dir_id(unsigned long id, double x, double y);
+int ft_travel_dir_id(unsigned long id, double x, double y);
 /**
  * @brief Lets a unit start to travel into a specific direction. Same as ft_travel_dir_id, besides that this function takes a pointer to a unit instead of an id. When x and y are both 0, the unit will stop traveling.
  *
@@ -325,21 +325,21 @@ void ft_travel_dir_id(unsigned long id, double x, double y);
  * @param x x vector of the direction the unit should travel.
  * @param y y vector of the direction the unit should travel.
  */
-void ft_travel_dir(t_obj *unit, double x, double y);
+int ft_travel_dir(t_obj *unit, double x, double y);
 /**
  * @brief Lets a unit travel to another obj. Same as ft_travel_to_id, besides that this function takes an id instead of a pointer to a unit.
  *
  * @param id Which unit should travel.
  * @param target To which obj the unit should travel.
  */
-void ft_travel_to_id_obj(unsigned long id, t_obj *target);
+int ft_travel_to_id_obj(unsigned long id, t_obj *target);
 /**
  * @brief Lets a unit travel to another obj. Same as ft_travel_to_id_obj, besides that this function takes a pointer to a unit instead of an id.
  *
  * @param unit Pointer to the unit that should travel.
  * @param target Pointer to the obj that the unit should travel to.
  */
-void ft_travel_to_obj(t_obj *unit, t_obj *target);
+int ft_travel_to_obj(t_obj *unit, t_obj *target);
 /**
  * @brief Creates a unit of a specific type. Same as ft_create, besides that this function takes an id instead of a pointer to a unit.
  *
@@ -352,21 +352,21 @@ t_obj	*ft_create_unit(t_unit_type type_id);
  * @param attacker_id Which unit should be used to attack.
  * @param target_id Which unit should be attacked.
  */
-void ft_attack_id(unsigned long attacker_id, unsigned long target_id);
+int ft_attack_id(unsigned long attacker_id, unsigned long target_id);
 /**
  * @brief Lets a unit attack another unit. Same as ft_attack_id, besides that this function takes a pointer to a unit instead of an id.
  *
  * @param attacker_unit Pointer to the unit that should be used to attack.
  * @param target_obj Pointer to the obj that should be attacked.
  */
-void ft_attack(t_obj *attacker, t_obj *target);
+int ft_attack(t_obj *attacker, t_obj *target);
 /**
  * @brief Travel and attack a target. The unit will travel to the target and attack it. Same as calling ft_travel_to_obj and ft_attack.
  *
  * @param attacker_unit Pointer to the unit that should be used to attack.
  * @param attack_obj Pointer to the unit that should be attacked.
  */
-void ft_travel_attack(t_obj *attacker_unit, t_obj *attack_obj);
+int ft_travel_attack(t_obj *attacker_unit, t_obj *attack_obj);
 
 // -------------- print_utils.c --------------
 /**

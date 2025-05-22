@@ -10,7 +10,7 @@ char	**ft_create_array(const int count, ...)
 	va_start(args, count);
 	array = malloc(sizeof(char *) * (count + 1));
 	if (!array)
-		return (0);
+		return NULL;
 	i = 0;
 	while (i < count)
 	{
@@ -19,7 +19,7 @@ char	**ft_create_array(const int count, ...)
 	}
 	array[i] = 0;
 	va_end(args);
-	return (array);
+	return array;
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -28,7 +28,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*ptr;
 
 	if (!s)
-		return (0);
+		return NULL;
 	if (start >= strlen(s))
 		len_s = 0;
 	else
@@ -37,12 +37,12 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = len_s;
 	ptr = malloc((len + 1) * sizeof(char));
 	if (!ptr)
-		return (0);
+		return NULL;
 	if (len > 0)
 		ft_strlcpy(ptr, &s[start], len + 1);
 	else
 		ptr[0] = 0;
-	return (ptr);
+	return ptr;
 }
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
@@ -55,10 +55,10 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	sc1 = (unsigned char *) s1;
 	sc2 = (unsigned char *) s2;
 	if (n == 0)
-		return (0);
+		return 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
 		i++;
-	return (sc1[i] - sc2[i]);
+	return sc1[i] - sc2[i];
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
@@ -68,7 +68,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 
 	len_src = strlen(src);
 	if (dstsize == 0)
-		return (len_src);
+		return len_src;
 	i = 0;
 	while (i < dstsize - 1 && i < len_src)
 	{
@@ -76,7 +76,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		i++;
 	}
 	dst[i] = 0;
-	return (len_src);
+	return len_src;
 }
 
 void	ft_free_game()

@@ -11,7 +11,9 @@ t_team_config	*ft_parse_team_config(int token_ind, int token_len, jsmntok_t *tok
 	last_json_index = tokens[token_ind].end;
 
 	teams = malloc(sizeof(t_team_config));
-	teams[0].id = 0;
+	if (!teams)
+		ft_perror_exit("Could not allocate memory for team config");
+	teams->id = 0;
 
 	int index = 0;
 	while (token_ind != -1)
@@ -20,7 +22,9 @@ t_team_config	*ft_parse_team_config(int token_ind, int token_len, jsmntok_t *tok
 		if (next_token_ind == -1 || tokens[next_token_ind].end > last_json_index)
 			break;
 
-		teams = realloc(teams, sizeof(t_team_config) * (index + 2));
+		teams = realloc(teams, sizeof(t_team_config) * (index * 2));
+		if (!teams)
+			ft_perror_exit("Failed to realloc team config array");
 		teams[index + 1].id = 0;
 
 		teams[index].id = ft_find_parse_ulong("id", &token_ind, token_len, tokens, json);
@@ -43,7 +47,9 @@ t_unit_config	*ft_parse_unit_config(int token_ind, int token_len, jsmntok_t *tok
 	last_json_index = tokens[token_ind].end;
 
 	units = malloc(sizeof(t_unit_config));
-	units[0].type_id = 0;
+	if (!units)
+		ft_perror_exit("Could not allocate memory for unit config");
+	units->type_id = 0;
 
 	int index = 0;
 	while (token_ind != -1)
@@ -52,7 +58,9 @@ t_unit_config	*ft_parse_unit_config(int token_ind, int token_len, jsmntok_t *tok
 		if (next_token_ind == -1 || tokens[next_token_ind].end > last_json_index)
 			break;
 
-		units = realloc(units, sizeof(t_unit_config) * (index + 2));
+		units = realloc(units, sizeof(t_unit_config) * (index * 2));
+		if (!units)
+			ft_perror_exit("Failed to realloc team config array");
 		units[index + 1].type_id = 0;
 
 		units[index].name = ft_find_parse_str("name", &token_ind, token_len, tokens, json);
@@ -83,7 +91,9 @@ t_resource_config	*ft_parse_resource_config(int token_ind, int token_len, jsmnto
 	last_json_index = tokens[token_ind].end;
 
 	resource_configs = malloc(sizeof(t_resource_config));
-	resource_configs[0].type_id = 0;
+	if (!resource_configs)
+		ft_perror_exit("Could not allocate memory for resource_configs");
+	resource_configs->type_id = 0;
 
 	int index = 0;
 	while (token_ind != -1)
@@ -92,7 +102,9 @@ t_resource_config	*ft_parse_resource_config(int token_ind, int token_len, jsmnto
 		if (next_token_ind == -1 || tokens[next_token_ind].end > last_json_index)
 			break;
 
-		resource_configs = realloc(resource_configs, sizeof(t_resource_config) * (index + 2));
+		resource_configs = realloc(resource_configs, sizeof(t_resource_config) * (index * 2));
+		if (!resource_configs)
+			ft_perror_exit("Failed to realloc resource config array");
 		resource_configs[index + 1].type_id = 0;
 
 		resource_configs[index].type_id = ft_find_parse_ulong("type_id", &token_ind, token_len, tokens, json);

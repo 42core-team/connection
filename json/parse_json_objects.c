@@ -1,13 +1,15 @@
 #include "parse_json.h"
 
-static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
+static int apply_obj_to_arr(t_obj obj, t_obj ***arr)
 {
 	bool objInserted = false;
+	size_t arrLen;
+	size_t index;
 
 	obj.state = STATE_ALIVE;
 
 	// 1. LOOP: Id Matching
-	size_t index = 0;
+	index = 0;
 	while ((*arr)[index] != NULL)
 	{
 		if ((*arr)[index]->id == obj.id)
@@ -32,7 +34,7 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 		index++;
 	}
 	if (objInserted)
-		return ;
+		return 0;
 
 	// 2. LOOP: Placeholder matching
 	index = 0;
@@ -66,7 +68,7 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 		index++;
 	}
 	if (objInserted)
-		return ;
+		return 0;
 
 	if ((*arr) == game.units && obj.s_unit.team_id == game.my_team_id)
 	{
@@ -74,12 +76,22 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 	}
 
 	// 3. Add to the back
-	size_t arrLen = 0;
+	arrLen = 0;
 	while ((*arr)[arrLen] != NULL)
 		arrLen++;
-	(*arr) = realloc((*arr), sizeof(t_obj *) * (arrLen + 2));
+	(*arr) = realloc((*arr), sizeof(t_obj *) * (arrLen * 2));
+	if (!*arr)
+	{
+		LOG_ERR("failed to reallocate array");
+		return 1;
+	}
 	(*arr)[arrLen + 1] = NULL;
 	(*arr)[arrLen] = malloc(sizeof(t_obj));
+	if (!(*arr)[arrLen])
+	{
+		LOG_ERR("failed to allocate new element");
+		return 1;
+	}
 	t_obj * existingObj = (*arr)[arrLen];
 	existingObj->type = obj.type;
 	existingObj->state = STATE_ALIVE;
@@ -95,6 +107,8 @@ static void apply_obj_to_arr(t_obj obj, t_obj ***arr)
 	}
 	if ((*arr) == game.cores)
 		existingObj->s_core.team_id = obj.s_core.team_id;
+
+	return 0;
 }
 
 void ft_parse_cores(int token_ind, int token_len, jsmntok_t *tokens, char *json)
@@ -109,6 +123,8 @@ void ft_parse_cores(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 	if (game.cores == NULL)
 	{
 		game.cores = malloc(sizeof(t_obj *) * 1);
+		if (!game.cores)
+			ft_perror_exit("Could not allocate memory for cores");
 		game.cores[0] = NULL;
 	}
 
@@ -131,7 +147,8 @@ void ft_parse_cores(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 		readCore.y = ft_find_parse_ulong("y", &token_ind, token_len, tokens, json);
 		readCore.hp = ft_find_parse_ulong("hp", &token_ind, token_len, tokens, json);
 
-		apply_obj_to_arr(readCore, &game.cores);
+		if (apply_obj_to_arr(readCore, &game.cores))
+			ft_perror_exit("Could not apply obj to array");
 
 		index++;
 	}
@@ -149,6 +166,8 @@ void	ft_parse_resources(int token_ind, int token_len, jsmntok_t *tokens, char *j
 	if (game.resources == NULL)
 	{
 		game.resources = malloc(sizeof(t_obj *) * 1);
+		if (!game.resources)
+			ft_perror_exit("Could not allocate memory for resources");
 		game.resources[0] = NULL;
 	}
 
@@ -170,7 +189,8 @@ void	ft_parse_resources(int token_ind, int token_len, jsmntok_t *tokens, char *j
 		readResource.y = ft_find_parse_ulong("y", &token_ind, token_len, tokens, json);
 		readResource.hp = ft_find_parse_ulong("hp", &token_ind, token_len, tokens, json);
 
-		apply_obj_to_arr(readResource, &game.resources);
+		if (apply_obj_to_arr(readResource, &game.resources))
+			ft_perror_exit("Could not apply obj to array");
 
 		index++;
 	}
@@ -188,6 +208,8 @@ void	ft_parse_units(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 	if (game.units == NULL)
 	{
 		game.units = malloc(sizeof(t_obj *) * 1);
+		if (!game.units)
+			ft_perror_exit("Could not allocate memory for units");
 		game.units[0] = NULL;
 	}
 
@@ -207,7 +229,8 @@ void	ft_parse_units(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 		readUnit.x = ft_find_parse_ulong("x", &token_ind, token_len, tokens, json);
 		readUnit.y = ft_find_parse_ulong("y", &token_ind, token_len, tokens, json);
 
-		apply_obj_to_arr(readUnit, &game.units);
+		if (apply_obj_to_arr(readUnit, &game.units))
+			ft_perror_exit("Could not apply obj to array");
 
 		index++;
 	}
@@ -236,11 +259,15 @@ void ft_parse_teams(int token_ind, int token_len, jsmntok_t *tokens, char *json)
 	if (game.teams == NULL)
 	{
 		game.teams = malloc(sizeof(t_team *) * (teamCount + 1));
+		if (!game.teams)
+			ft_perror_exit("Could not allocate memory for teams");
 		game.teams[teamCount] = NULL;
 
 		for (size_t i = 0; i < teamCount; i++)
 		{
 			game.teams[i] = malloc(sizeof(t_team));
+			if (!game.teams[i])
+				ft_perror_exit("could not allocate memory for a team");
 			game.teams[i]->id = 0;
 			game.teams[i]->balance = 0;
 		}

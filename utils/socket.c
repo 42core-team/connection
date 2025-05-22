@@ -71,12 +71,12 @@ bool ft_wait_for_data(int fd) {
     retval = select(fd + 1, &readfds, NULL, NULL, &tv);
 
     if (retval == -1) {
-        ft_print_error(strerror(errno), __func__);
+        LOG_ERR("%s", strerror(errno));
         return false;
     } else if (retval) {
         return true;
     } else {
-		ft_print_error("Did not recieve any data from socket fd", __func__);
+        LOG_ERR("Did not recieve any data from socket fd");
         return false;
     }
 }
@@ -120,7 +120,7 @@ struct sockaddr_in	ft_init_addr(const char *hostname, const int port)
     hints.ai_socktype = SOCK_STREAM;
 
     if ((status = getaddrinfo(hostname, NULL, &hints, &res)) != 0) {
-        fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
+	LOG_ERR("getaddrinfo error: %s", gai_strerror(status));
         exit(EXIT_FAILURE);
     }
 
@@ -138,7 +138,7 @@ struct sockaddr_in	ft_init_addr(const char *hostname, const int port)
 
     if (p == NULL) {
         // We didn't find any address
-        fprintf(stderr, "Failed to resolve hostname\n");
+	LOG_ERR("Failed to resolve hostname");
         exit(EXIT_FAILURE);
     }
 
