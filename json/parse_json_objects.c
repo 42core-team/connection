@@ -79,7 +79,7 @@ static int apply_obj_to_arr(t_obj obj, t_obj ***arr)
 	arrLen = 0;
 	while ((*arr)[arrLen] != NULL)
 		arrLen++;
-	(*arr) = realloc((*arr), sizeof(t_obj *) * (arrLen * 2));
+	(*arr) = realloc((*arr), sizeof(t_obj *) * (arrLen + 2));
 	if (!*arr)
 	{
 		LOG_ERR("failed to reallocate array");
