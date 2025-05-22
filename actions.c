@@ -7,7 +7,7 @@ int	ft_travel_to_id(unsigned long id, unsigned long x, unsigned long y)
 
 	if (!*actions)
 	{
-		*actions = malloc(sizeof(t_action_travel) * 2);
+		*actions = malloc(sizeof(t_action_travel) + 2);
 		if (!*actions)
 		{
 			LOG_ERR("Error allocating actions");
@@ -17,7 +17,7 @@ int	ft_travel_to_id(unsigned long id, unsigned long x, unsigned long y)
 	}
 	else
 	{
-		*actions = realloc(*actions, sizeof(t_action_travel) * (*count * 2));
+		*actions = realloc(*actions, sizeof(t_action_travel) * (*count + 2));
 		if (!*actions)
 		{
 			LOG_ERR("Error reallocating actions");
@@ -92,7 +92,7 @@ int	ft_travel_dir_id(unsigned long id, double x, double y)
 
 	if (!*actions)
 	{
-		*actions = malloc(sizeof(t_action_travel) * 2);
+		*actions = malloc(sizeof(t_action_travel) + 2);
 		if (!*actions)
 		{
 			LOG_ERR("Error allocating actions");
@@ -102,7 +102,7 @@ int	ft_travel_dir_id(unsigned long id, double x, double y)
 	}
 	else
 	{
-		*actions = realloc(*actions, sizeof(t_action_travel) * (*count * 2));
+		*actions = realloc(*actions, sizeof(t_action_travel) * (*count + 2));
 		if (!*actions)
 		{
 			LOG_ERR("Error reallocating actions");
@@ -154,7 +154,7 @@ t_obj	*ft_create_unit(t_unit_type type_id)
 
 	if (!*actions)
 	{
-		*actions = malloc(sizeof(t_action_create) * 2);
+		*actions = malloc(sizeof(t_action_create) + 2);
 		if (!*actions)
 		{
 			LOG_ERR("Error allocating actions");
@@ -164,7 +164,7 @@ t_obj	*ft_create_unit(t_unit_type type_id)
 	}
 	else
 	{
-		*actions = realloc(*actions, sizeof(t_action_create) * (*count * 2));
+		*actions = realloc(*actions, sizeof(t_action_create) * (*count + 2));
 		if (!*actions)
 		{
 			LOG_ERR("Error reallocating actions");
@@ -190,7 +190,7 @@ t_obj	*ft_create_unit(t_unit_type type_id)
 	int unitsLen = 0;
 	while (game.units[unitsLen])
 		unitsLen++;
-	game.units = realloc(game.units, sizeof(t_obj *) * (unitsLen * 2));
+	game.units = realloc(game.units, sizeof(t_obj *) * (unitsLen + 2));
 	if (!game.units)
 	{
 		free(newUnit);
@@ -210,7 +210,7 @@ int	ft_attack_id(unsigned long attacker_id, unsigned long target_id)
 
 	if (!*actions)
 	{
-		*actions = malloc(sizeof(t_action_attack) * 2);
+		*actions = malloc(sizeof(t_action_attack) + 2);
 		if (!*actions)
 		{
 			LOG_ERR("Error allocating actions");
@@ -220,7 +220,7 @@ int	ft_attack_id(unsigned long attacker_id, unsigned long target_id)
 	}
 	else
 	{
-		*actions = realloc(*actions, sizeof(t_action_attack) * (*count * 2));
+		*actions = realloc(*actions, sizeof(t_action_attack) * (*count + 2));
 		if (!*actions)
 		{
 			LOG_ERR("Error reallocating actions");
