@@ -26,7 +26,7 @@ t_obj	*ft_get_first_opponent_core(void)
 
 	while (game.cores[ind] != NULL) {
 		if ((game.cores[ind]->s_core.team_id != game.my_team_id) &&
-		    (game.cores[ind]->state == STATE_ALIVE))
+			(game.cores[ind]->state == STATE_ALIVE))
 			return (game.cores[ind]);
 		ind++;
 	}
@@ -46,6 +46,11 @@ t_obj	*ft_get_nearest_core(t_obj *obj)
 
 	while (game.cores[ind] != NULL)
 	{
+		if (game.cores[ind]->state != STATE_ALIVE)
+		{
+			ind++;
+			continue ;
+		}
 		dist = ft_distance(obj, game.cores[ind]);
 		if (dist < min_dist)
 		{
@@ -56,4 +61,35 @@ t_obj	*ft_get_nearest_core(t_obj *obj)
 	}
 
 	return (nearest);
+}
+
+t_obj **ft_get_cores(void)
+{
+	int		ind = 0;
+	int		count = 0;
+	if (!game.cores)
+		return (NULL);
+
+	while (game.cores[ind] != NULL)
+	{
+		if (game.cores[ind]->state == STATE_ALIVE)
+			count++;
+		ind++;
+	}
+	t_obj **alive_cores = malloc(sizeof(t_obj *) * (count + 1));
+	if (!alive_cores)
+		return (NULL);
+	alive_cores[count] = NULL;
+	ind = 0;
+	count = 0;
+	while (game.cores[ind] != NULL)
+	{
+		if (game.cores[ind]->state == STATE_ALIVE)
+		{
+			alive_cores[count] = game.cores[ind];
+			count++;
+		}
+		ind++;
+	}
+	return (alive_cores);
 }
