@@ -17,9 +17,9 @@ t_obj	**ft_get_my_units(void)
 	}
 
 	t_obj	**units = malloc((count + 1) * sizeof(t_obj *));
-
 	if (!units)
 		return (NULL);
+
 	ind = 0;
 	count = 0;
 	while (game.units[ind] != NULL)
@@ -51,9 +51,9 @@ t_obj	**ft_get_opponent_units(void)
 	}
 
 	t_obj	**units = malloc((count + 1) * sizeof(t_obj *));
-
 	if (!units)
 		return (NULL);
+
 	ind = 0;
 	count = 0;
 	while (game.units[ind] != NULL)
