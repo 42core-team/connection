@@ -1,7 +1,7 @@
-LIBRARY = con_lib.a
+LIBRARY = libcon_lib.so
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -lm -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -lm -g -fsanitize=address -fPIC
 
 INC = inc
 OBJDIR = obj
@@ -13,7 +13,7 @@ OBJS := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
 all: $(LIBRARY)
 
 $(LIBRARY): $(OBJS)
-	ar rcs $(LIBRARY) $(OBJS)
+	$(CC) -shared -o $(LIBRARY) $(OBJS) -lm
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	mkdir -p $(dir $@)
