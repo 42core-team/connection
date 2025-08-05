@@ -13,21 +13,21 @@
 /// @brief Type of object
 typedef enum e_obj_type
 {
-	OBJ_CORE,
-	OBJ_UNIT,
-	OBJ_RESOURCE,
-	OBJ_WALL,
-	OBJ_MONEY,
-	OBJ_BOMB
+	OBJ_CORE = 0,
+	OBJ_UNIT = 1,
+	OBJ_RESOURCE = 2,
+	OBJ_WALL = 3,
+	OBJ_MONEY = 4,
+	OBJ_BOMB = 5
 } t_obj_type;
 
 /// @brief Object state.
 /// @details Uninitialized objects should only have their type, state, data, team_id & unit_type read and set.
 typedef enum e_obj_state
 {
-	STATE_UNINITIALIZED = 1,
-	STATE_ALIVE = 2,
-	STATE_DEAD = 3
+	STATE_DEAD = -1,
+	STATE_UNINITIALIZED = 0,
+	STATE_ALIVE = 1,
 } t_obj_state;
 
 /// @brief Type of unit.
